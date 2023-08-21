@@ -132,6 +132,10 @@ class Train:
         cats = train_dataset.coco.cats
         id2label = {k: v['name'] for k,v in cats.items()}
         model = Detr(lr=self.lr, lr_backbone=self.lr_backbone, weight_decay=self.weight_decay, id2label = id2label, train_dataloader = train_dataloader, val_dataloader = val_dataloader)
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model.to(device)
+        
         #PATH = '/Users/.../aa.ckpt'
         #model = model.load_from_checkpoint(PATH,lr=self.lr, lr_backbone=self.lr_backbone, weight_decay=self.weight_decay, id2label = id2label, train_dataloader = train_dataloader, val_dataloader = val_dataloader)
         trainer = Trainer(gpus = self.gpus, max_steps = self.max_steps, gradient_clip_val = self.gradient_clip_val)
